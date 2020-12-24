@@ -40,8 +40,10 @@ namespace DN5WebAPIEFCC.Controllers
 
         // POST api/<ContactController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult<IEnumerable<Contact>> Post(Contact contact)
         {
+            contacts.Add(contact);
+            return contacts;
         }
 
         // PUT api/<ContactController>/5
