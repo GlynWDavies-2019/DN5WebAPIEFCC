@@ -21,16 +21,21 @@ namespace DN5WebAPIEFCC.Controllers
 
         // GET: api/<ContactController>
         [HttpGet]
-        public IEnumerable<Contact> Get()
+        public ActionResult<IEnumerable<Contact>> Get()
         {
             return contacts;
         }
 
         // GET api/<ContactController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<Contact> Get(int id)
         {
-            return "value";
+            Contact contact = contacts.FirstOrDefault(c => c.Id == id);
+            if(contact == null)
+            {
+                return NotFound(new { Message = $"There is no contact with an id of {id}" });
+            }
+            return Ok(contact);
         }
 
         // POST api/<ContactController>
