@@ -65,8 +65,17 @@ namespace DN5WebAPIEFCC.Controllers
 
         // DELETE api/<ContactController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<IEnumerable<Contact>> Delete(int id)
         {
+            Contact contact = contacts.FirstOrDefault(c => c.Id == id);
+            if(contact == null)
+            {
+                return NotFound(new { Message = $"There is no contact with id {id}" });
+            }
+
+            contacts.Remove(contact);
+
+            return contacts;
         }
     }
 }
