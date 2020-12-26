@@ -25,7 +25,10 @@ namespace DN5WebAPIEFCC.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contact>>> GetContacts()
         {
-            return await _context.Contacts.ToListAsync();
+            // Return all
+            // return await _context.Contacts.ToListAsync();
+            // Filter
+            return await _context.Contacts.Where(c => c.IsDeleted == false).ToListAsync();
         }
 
         // GET: api/Contacts/5
@@ -80,7 +83,7 @@ namespace DN5WebAPIEFCC.Controllers
         {
             _context.Contacts.Add(contact);
             await _context.SaveChangesAsync();
-
+            // return Ok(_context.Contacts);
             return CreatedAtAction("GetContact", new { id = contact.Id }, contact);
         }
 
@@ -93,11 +96,14 @@ namespace DN5WebAPIEFCC.Controllers
             {
                 return NotFound();
             }
-
-            _context.Contacts.Remove(contact);
+            // Actual delete
+            // _context.Contacts.Remove(contact);
+            // Soft delete
+            contact.IsDeleted = true;
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            // return NoContent();
+            return Ok(_context.Contacts);
         }
 
         private bool ContactExists(int id)
